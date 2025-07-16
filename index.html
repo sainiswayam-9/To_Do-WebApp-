@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List with Alarm</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do List</h1>
+    <div id="clock">00:00:00</div>
+    <input type="text" id="taskInput" placeholder="Add your task..." />
+    <input type="time" id="alarmTime" />
+    <button id="addBtn">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <audio id="alarmAudio" src="alarm.mp3" preload="auto"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
