@@ -1,45 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Advanced To-Do App</title>
+  <title>Smart To-Do with Clock & Alarms</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <div class="left-panel">
-      <h2>⏱ Stopwatch</h2>
-      <div id="stopwatch">00:00:00</div>
-      <button onclick="startStopwatch()">Start</button>
-      <button onclick="stopStopwatch()">Stop</button>
-      <button onclick="resetStopwatch()">Reset</button>
-    </div>
+    <aside class="side-panel">
+      <h2>Stopwatch</h2>
+      <div class="stopwatch">
+        <span id="stopwatch">00:00:00</span><br/>
+        <button onclick="startStopwatch()">Start</button>
+        <button onclick="stopStopwatch()">Stop</button>
+        <button onclick="resetStopwatch()">Reset</button>
+      </div>
+    </aside>
 
-    <div class="main-panel">
-      <h1>📝 To-Do List with Alarm</h1>
-      <div id="clock">00:00:00</div>
-      <input type="text" id="taskInput" placeholder="Add a new task" />
+    <main class="main-content">
+      <h1>📝 To-Do List + Clock + Alarm</h1>
+      <div class="clock" id="clock">00:00:00</div>
+
+      <input type="text" id="taskInput" placeholder="Enter task" />
       <input type="time" id="alarmTime" />
       <button onclick="addTask()">Add Task</button>
-      <ul id="taskList"></ul>
-      <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
-      <div class="alarm-controls">
+
+      <div class="buttons">
         <button onclick="stopAlarm()">⏹ Stop</button>
-        <span style="margin: 0 10px;"></span>
-        <button onclick="snoozeAlarm()">😴 Snooze (5 mins)</button>
+        <button onclick="snoozeAlarm()">😴 Snooze</button>
       </div>
-    </div>
 
-    <div class="right-panel">
-      <h2>⏲ Timer</h2>
-      <input type="number" id="timerMinutes" placeholder="Minutes"/>
-      <button onclick="startTimer()">Start Timer</button>
-      <div id="timerDisplay">00:00</div>
-    </div>
+      <ul id="taskList"></ul>
+    </main>
+
+    <aside class="side-panel">
+      <h2>Timer</h2>
+      <div class="timer">
+        <input type="number" id="timerMinutes" placeholder="Minutes" />
+        <button onclick="startTimer()">Start Timer</button>
+        <p id="timerDisplay">00:00</p>
+      </div>
+    </aside>
   </div>
-
+  <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
   <script src="script.js"></script>
 </body>
 </html>
