@@ -1,59 +1,54 @@
-
-let alarmTimeout;
-let snoozeTimeout;
-
-// Live Clock
 function updateClock() {
-  const now = new Date();
-  const time = now.toLocaleTimeString();
-  document.getElementById('clock').textContent = time;
+  const clock = document.getElementById("clock");
+  setInterval(() => {
+    const now = new Date();
+    clock.innerText = now.toLocaleTimeString();
+    checkAlarms(now);
+  }, 1000);
+}
+updateClock();
 
-  const alarmTime = document.getElementById('alarmTime').value;
-  if (alarmTime === time.slice(0,5)) {
-    document.getElementById('alarmSound').play();
-    alert('⏰ Alarm: ' + alarmTime);
+function addTask() {
+  const taskText = document.getElementById("taskInput").value;
+  const alarmTime = document.getElementById("alarmTime").value;
+  if (!taskText || !alarmTime) return;
+
+  const li = document.createElement("li");
+  li.innerText = taskText + " at " + alarmTime;
+  document.getElementById("taskList").appendChild(li);
+
+  alarms.push(alarmTime);
+}
+
+let alarms = [];
+
+function checkAlarms(now) {
+  const current = now.toTimeString().slice(0, 5);
+  if (alarms.includes(current)) {
+    document.getElementById("alarmSound").play();
+    alert("⏰ Alarm for task!");
+    alarms = alarms.filter(t => t !== current);
   }
 }
-setInterval(updateClock, 1000);
 
-// Add Task
-function addTask() {
-  const taskInput = document.getElementById('taskInput');
-  const taskList = document.getElementById('taskList');
-  const task = taskInput.value;
-  if (!task) return;
-  const li = document.createElement('li');
-  li.textContent = task;
-  taskList.appendChild(li);
-  taskInput.value = '';
-}
-
-// Alarm Stop & Snooze
 function stopAlarm() {
-  document.getElementById('alarmSound').pause();
-  document.getElementById('alarmSound').currentTime = 0;
-  clearTimeout(alarmTimeout);
-  clearTimeout(snoozeTimeout);
+  const alarm = document.getElementById("alarmSound");
+  alarm.pause();
+  alarm.currentTime = 0;
 }
 
 function snoozeAlarm() {
   stopAlarm();
-  snoozeTimeout = setTimeout(() => {
-    document.getElementById('alarmSound').play();
-    alert('🔔 Snoozed alarm!');
-  }, 5 * 60 * 1000);
+  setTimeout(() => document.getElementById("alarmSound").play(), 300000);
 }
 
 // Stopwatch
-let stopwatchInterval, stopwatchTime = 0;
+let stopwatchTime = 0, stopwatchInterval;
 function startStopwatch() {
   if (stopwatchInterval) return;
   stopwatchInterval = setInterval(() => {
     stopwatchTime++;
-    let hours = String(Math.floor(stopwatchTime / 3600)).padStart(2, '0');
-    let minutes = String(Math.floor((stopwatchTime % 3600) / 60)).padStart(2, '0');
-    let seconds = String(stopwatchTime % 60).padStart(2, '0');
-    document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
+    document.getElementById("stopwatch").innerText = new Date(stopwatchTime * 1000).toISOString().substr(11, 8);
   }, 1000);
 }
 function stopStopwatch() {
@@ -61,25 +56,27 @@ function stopStopwatch() {
   stopwatchInterval = null;
 }
 function resetStopwatch() {
-  stopStopwatch();
   stopwatchTime = 0;
-  document.getElementById('stopwatch').textContent = '00:00:00';
+  document.getElementById("stopwatch").innerText = "00:00:00";
+  stopStopwatch();
 }
 
 // Timer
 let timerInterval;
 function startTimer() {
-  let minutes = parseInt(document.getElementById('timerMinutes').value);
+  const minutes = parseInt(document.getElementById("timerMinutes").value);
   if (isNaN(minutes) || minutes <= 0) return;
-  let time = minutes * 60;
+  let timeLeft = minutes * 60;
   timerInterval = setInterval(() => {
-    let min = String(Math.floor(time / 60)).padStart(2, '0');
-    let sec = String(time % 60).padStart(2, '0');
-    document.getElementById('timerDisplay').textContent = `${min}:${sec}`;
-    if (--time < 0) {
+    if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      alert('⏳ Timer completed!');
-      document.getElementById('alarmSound').play();
+      document.getElementById("alarmSound").play();
+      alert("⏳ Timer Done!");
     }
+    let min = Math.floor(timeLeft / 60);
+    let sec = timeLeft % 60;
+    document.getElementById("timerDisplay").innerText =
+      (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+    timeLeft--;
   }, 1000);
 }
